@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificación de Cambio en tu Vuelo - Umes Air</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .header h1 {
+            margin: 0;
+            color: #ffc107;
+        }
+        .content p {
+            line-height: 1.6;
+        }
+        .change-details, .original-details, .new-details {
+            margin-top: 20px;
+            padding: 15px;
+            border-left-width: 4px;
+            border-left-style: solid;
+        }
+        .change-details {
+            background-color: #fff8e1;
+            border-left-color: #ffc107;
+        }
+        .original-details {
+            background-color: #fce4ec; /* Un tono rosa claro para lo original */
+            border-left-color: #e91e63;
+            margin-bottom: 10px;
+        }
+        .new-details {
+            background-color: #e8f5e9; /* Un tono verde claro para lo nuevo */
+            border-left-color: #4caf50;
+        }
+        .details strong {
+            display: inline-block;
+            width: 150px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Notificación de Cambio en tu Vuelo</h1>
+        </div>
+        <div class="content">
+            <p>Estimado/a {{ customer_name }},</p>
+            <p>Te informamos que ha habido un cambio en tu reservación para el vuelo <strong>{{ original_flight.flight_number }}</strong> ({{ original_flight.origin }} - {{ original_flight.destination }}).</p>
+            
+            <div class="change-details">
+                <p><strong>Motivo del cambio:</strong></p>
+                <p>{{ change_reason }}</p>
+            </div>
+
+            <p>A continuación, te mostramos los detalles originales y los nuevos detalles de tu vuelo:</p>
+
+            <h3>Detalles Originales:</h3>
+            <div class="original-details details">
+                <p><strong>Fecha Original:</strong> {{ original_flight.date | strftime('%d/%m/%Y') }}</p>
+                <p><strong>Hora de Salida Original:</strong> {{ original_flight.departure_time }}</p>
+                <!-- Puedes añadir más detalles originales si es necesario -->
+            </div>
+
+            <h3>Nuevos Detalles:</h3>
+            <div class="new-details details">
+                <p><strong>Nueva Fecha:</strong> {{ new_flight.date | strftime('%d/%m/%Y') }}</p>
+                <p><strong>Nueva Hora de Salida:</strong> {{ new_flight.departure_time }}</p>
+                <!-- Puedes añadir más detalles nuevos si es necesario -->
+            </div>
+
+            <p>Tu número de reserva <strong>{{ reservation.id }}</strong> y asiento <strong>{{ reservation.seat_number if reservation.seat_number else 'Asignado en el aeropuerto' }}</strong> permanecen sin cambios, a menos que se te notifique lo contrario.</p>
+            <p>Si estos cambios no te convienen o tienes alguna pregunta, por favor, no dudes en contactarnos lo antes posible.</p>
+            <p>Lamentamos cualquier inconveniente que esto pueda causarte.</p>
+        </div>
+        <div class="footer">
+            <p>&copy; {{ now.year }} Umes Air. Todos los derechos reservados.</p>
+            <p>{{ team_name }}</p>
+        </div>
+    </div>
+</body>
+</html>

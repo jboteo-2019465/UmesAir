@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificación de Cancelación de Vuelo - Umes Air</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .header h1 {
+            margin: 0;
+            color: #dc3545;
+        }
+        .content p {
+            line-height: 1.6;
+        }
+        .cancellation-details {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ffebee;
+            border-left: 4px solid #dc3545;
+        }
+        .cancellation-details strong {
+            display: inline-block;
+            width: 150px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Notificación de Cancelación de Vuelo</h1>
+        </div>
+        <div class="content">
+            <p>Estimado/a {{ customer_name }},</p>
+            <p>Lamentamos informarle que su reservación para el vuelo <strong>{{ flight.flight_number }}</strong> ({{ flight.origin }} - {{ flight.destination }}) programado para el <strong>{{ flight.date | strftime('%d/%m/%Y') }}</strong> a las <strong>{{ flight.departure_time }}</strong> ha sido cancelada debido a la cancelación del vuelo.</p>
+            
+            <div class="cancellation-details">
+                <p><strong>Motivo de la cancelación del vuelo:</strong></p>
+                <p>{{ cancellation_reason }}</p>
+            </div>
+
+            <p>Entendemos que esto puede causar inconvenientes y nos disculpamos sinceramente. Nuestro equipo se pondrá en contacto contigo a la brevedad para discutir opciones alternativas o el proceso de reembolso.</p>
+            <p>Si tienes alguna pregunta urgente, por favor, no dudes en contactarnos.</p>
+        </div>
+        <div class="footer">
+            <p>&copy; {{ now.year }} Umes Air. Todos los derechos reservados.</p>
+            <p>{{ team_name }}</p>
+        </div>
+    </div>
+</body>
+</html>

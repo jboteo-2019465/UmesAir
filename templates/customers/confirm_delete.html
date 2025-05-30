@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmar Eliminación de Cliente{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Confirmar Eliminación de Cliente</h2>
+    <p>Estás a punto de eliminar al cliente <strong>{{ customer.first_name }} {{ customer.last_name }} ({{ customer.email }})</strong>.</p>
+    <p>Esta acción también eliminará todas las reservaciones asociadas.</p>
+
+    {% if reservations_customer or (user_associated and reservations_user) %}
+        <div class="alert alert-warning">
+            <p><strong>Este cliente/usuario tiene las siguientes reservaciones activas que también serán eliminadas:</strong></p>
+            <ul>
+                {% if user_associated and request.form.get('delete_user') %}
+                    {% for reservation in reservations_user %}
+                        <li>Vuelo {{ reservation.flight_code }} ({{ reservation.date }}) de {{ reservation.origin }} a {{ reservation.destination }}, Asiento: {{ reservation.seat_number }}</li>
+                    {% endfor %}
+                {% elif reservations_customer %}
+                    {% for reservation in reservations_customer %}
+                        <li>Vuelo {{ reservation.flight_code }} ({{ reservation.date }}) de {{ reservation.origin }} a {{ reservation.destination }}, Asiento: {{ reservation.seat_number }}</li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+    {% if user_associated %}
+        <p>Este cliente tiene una cuenta de usuario asociada:</p>
+        <ul>
+            <li><strong>Nombre de Usuario:</strong> {{ user_associated.name }}</li>
+            <li><strong>Email de Usuario:</strong> {{ user_associated.email }}</li>
+            <li><strong>ID de Usuario:</strong> {{ user_associated.id }}</li>
+        </ul>
+        <form method="POST" action="{{ url_for('delete_customer_with_user_prompt', customer_id=customer.id) }}">
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" name="delete_user" id="delete_user" value="true">
+                <label class="form-check-label" for="delete_user">
+                    Eliminar también la cuenta de usuario asociada.
+                </label>
+            </div>
+            <button type="submit" class="btn btn-danger">Eliminar Cliente y (opcionalmente) Usuario</button>
+            <a href="{{ url_for('list_customers') }}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    {% else %}
+        <p>Este cliente no tiene una cuenta de usuario asociada directamente por email.</p>
+        <form method="POST" action="{{ url_for('delete_customer_with_user_prompt', customer_id=customer.id) }}">
+            <button type="submit" class="btn btn-danger">Confirmar Eliminación de Cliente</button>
+            <a href="{{ url_for('list_customers') }}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}

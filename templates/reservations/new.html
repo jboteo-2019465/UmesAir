@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Nueva Reserva - UMES Air{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Panel</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('list_flights') }}">Vuelos</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('flight_seats', flight_id=flight.id) }}">Selección de Asientos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Nueva Reserva</li>
+        </ol>
+    </nav>
+    
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Nueva Reserva para el Vuelo {{ flight.flight_code }}</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5>Detalles del Vuelo</h5>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-calendar me-2 text-primary"></i> <strong>Fecha:</strong> {{ flight.date }}</li>
+                        <li>
+                            <i class="fas fa-map-marker-alt me-2 text-primary"></i> 
+                            <strong>Ruta:</strong> {{ flight.origin }} a {{ flight.destination }}
+                        </li>
+                        <li>
+                            <i class="fas fa-clock me-2 text-primary"></i> 
+                            <strong>Hora:</strong> {{ flight.departure_time }} - {{ flight.arrival_time }}
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Información de Precios</h5>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-tag me-2 text-primary"></i> <strong>Tarifa Base:</strong> Q 450.00</li>
+                        <li><i class="fas fa-receipt me-2 text-primary"></i> <strong>Impuestos y Cargos:</strong> Incluidos</li>
+                        <li><i class="fas fa-money-bill-wave me-2 text-primary"></i> <strong>Precio Total:</strong> Q 450.00</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="customer_id" class="form-label">Seleccionar Cliente</label>
+                        <select class="form-select" id="customer_id" name="customer_id" required>
+                            <option value="">Seleccionar un cliente</option>
+                            {% for customer in customers %}
+                                <option value="{{ customer.id }}">{{ customer.first_name }} {{ customer.last_name }} ({{ customer.id_number }})</option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">Si el cliente no está en la lista, <a href="{{ url_for('new_customer') }}" target="_blank">agregue un nuevo cliente</a> primero.</div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="seat_number" class="form-label">Seleccionar Asiento</label>
+                        <select class="form-select" id="seat_number" name="seat_number" required>
+                            <option value="">Seleccionar un asiento</option>
+                            {% for row in range(1, 7) %}
+                                {% for col in ['A', 'B', 'C'] %}
+                                    {% set seat = row|string + col %}
+                                    {% if seat not in occupied_seats %}
+                                        <option value="{{ seat }}">{{ seat }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">Ver el <a href="{{ url_for('reservation_step2_seat', flight_id=flight.id, customer_id=customer.id) if customer else url_for('flight_seats', flight_id=flight.id) }}" target="_blank">mapa de asientos</a> para más detalles.</div>
+                    </div>
+                </div>
+                
+                <div class="mt-4 d-flex justify-content-between">
+                    <a href="{{ url_for('flight_seats', flight_id=flight.id) }}" class="btn btn-outline-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Crear Reserva</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

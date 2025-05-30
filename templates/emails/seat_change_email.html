@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Cambio de Asiento - UMES Air</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: #004085;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+            text-align: left;
+        }
+        .content p {
+            margin-bottom: 15px;
+        }
+        .flight-details {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .flight-details strong {
+            display: inline-block;
+            width: 150px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #777;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .logo img {
+            max-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Confirmación de Cambio de Asiento</h1>
+        </div>
+        <div class="logo">
+            <p>UMES Air</p> 
+        </div>
+        <div class="content">
+            <p>Estimado/a {{ customer_name }},</p>
+            <p>Le confirmamos que su asiento para el vuelo <strong>{{ flight.flight_code }}</strong> ha sido cambiado exitosamente.</p>
+            
+            <div class="flight-details">
+                <p><strong>Vuelo:</strong> {{ flight.flight_code }}</p>
+                <p><strong>Fecha:</strong> {{ flight.date }}</p>
+                <p><strong>Origen:</strong> {{ flight.origin }}</p>
+                <p><strong>Destino:</strong> {{ flight.destination }}</p>
+                <p><strong>Hora de Salida:</strong> {{ flight.departure_time }}</p>
+                <p><strong>Nuevo Asiento:</strong> {{ new_seat_number }}</p>
+            </div>
+
+            <p>Si usted no solicitó este cambio o tiene alguna pregunta, por favor contáctenos inmediatamente.</p>
+            <p>Gracias por volar con UMES Air.</p>
+            <p>Atentamente,<br>El equipo de UMES Air</p>
+        </div>
+        <div class="footer">
+            <p>&copy; {{ now.year }} UMES Air. Todos los derechos reservados.</p>
+            <p>Este es un correo electrónico generado automáticamente. Por favor, no responda a este mensaje.</p>
+        </div>
+    </div>
+</body>
+</html>

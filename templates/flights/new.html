@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}Agregar Nuevo Vuelo - UMES Air{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Panel</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('list_flights') }}">Vuelos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Agregar Nuevo Vuelo</li>
+        </ol>
+    </nav>
+    
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">Agregar Nuevo Vuelo</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="flight_code" class="form-label">Código de Vuelo</label>
+                        <input type="text" class="form-control" id="flight_code" name="flight_code" placeholder="VU 101" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="date" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="date" name="date" data-future-only="true" required>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="origin" class="form-label">Origen</label>
+                        <select class="form-select" id="origin" name="origin" required>
+                            <option value="">Seleccionar origen</option>
+                            <option value="GUA">Ciudad de Guatemala (GUA)</option>
+                            <option value="FRS">Flores, Petén (FRS)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="destination" class="form-label">Destino</label>
+                        <select class="form-select" id="destination" name="destination" required>
+                            <option value="">Seleccionar destino</option>
+                            <option value="GUA">Ciudad de Guatemala (GUA)</option>
+                            <option value="FRS">Flores, Petén (FRS)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="departure_time" class="form-label">Hora de Salida</label>
+                        <input type="time" class="form-control" id="departure_time" name="departure_time" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="arrival_time" class="form-label">Hora de Llegada</label>
+                        <input type="time" class="form-control" id="arrival_time" name="arrival_time" required>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="capacity" class="form-label">Capacidad de la Aeronave</label>
+                        <input type="number" class="form-control" id="capacity" name="capacity" min="1" max="18" value="18" required>
+                        <div class="form-text">La capacidad máxima para Embraer 110 es de 18 asientos.</div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="base_fare" class="form-label">Tarifa Base (Q)</label>
+                        <input type="number" class="form-control" id="base_fare" name="base_fare" min="0" step="0.01" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="total_fare" class="form-label">Precio Total (Q)</label>
+                        <input type="number" class="form-control" id="total_fare" name="total_fare" min="0" step="0.01" required>
+                        <div class="form-text">Incluye tarifa base más impuestos y cargos.</div>
+                    </div>
+                </div>
+                
+                <div class="mt-4 d-flex justify-content-between">
+                    <a href="{{ url_for('list_flights') }}" class="btn btn-outline-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Crear Vuelo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ensure origin and destination are different
+        const originSelect = document.getElementById('origin');
+        const destinationSelect = document.getElementById('destination');
+        
+        function updateDestinationOptions() {
+            const originValue = originSelect.value;
+            
+            for (let option of destinationSelect.options) {
+                if (option.value === '') continue;
+                option.disabled = option.value === originValue;
+            }
+            
+            if (destinationSelect.value === originValue) {
+                destinationSelect.value = '';
+            }
+        }
+        
+        originSelect.addEventListener('change', updateDestinationOptions);
+        updateDestinationOptions();
+        
+        // Set minimum date to today
+        const dateInput = document.getElementById('date');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.min = today;
+        dateInput.value = today;
+    });
+</script>
+{% endblock %}

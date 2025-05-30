@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recordatorio de Vuelo - Umes Air</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .header h1 {
+            margin: 0;
+            color: #17a2b8;
+        }
+        .content p {
+            line-height: 1.6;
+        }
+        .reminder-details {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e6f7ff;
+            border-left: 4px solid #17a2b8;
+        }
+        .reminder-details strong {
+            display: inline-block;
+            width: 150px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.9em;
+            color: #777;
+        }
+         .ticket-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .ticket-link:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>¡Tu Vuelo está por Salir!</h1>
+        </div>
+        <div class="content">
+            <p>Estimado/a {{ customer_name }},</p>
+            <p>Este es un recordatorio amistoso de que tu vuelo con Umes Air está programado para salir pronto.</p>
+            
+            <div class="reminder-details">
+                <p><strong>Número de Reserva:</strong> {{ reservation.id }}</p>
+                <p><strong>Vuelo:</strong> {{ flight.flight_number }}</p>
+                <p><strong>Origen:</strong> {{ flight.origin }}</p>
+                <p><strong>Destino:</strong> {{ flight.destination }}</p>
+                <p><strong>Fecha:</strong> {{ flight.date | strftime('%d/%m/%Y') }}</p>
+                <p><strong>Hora de Salida Programada:</strong> {{ flight.departure_time }}</p>
+                <p><strong>Asiento:</strong> {{ reservation.seat_number if reservation.seat_number else 'Asignado en el aeropuerto' }}</p>
+            </div>
+
+            <p>Por favor, asegúrate de estar en la puerta de embarque a tiempo. Puedes verificar los detalles de tu puerta de embarque en las pantallas del aeropuerto.</p>
+            <p>Si necesitas acceder a tu boleto electrónico, puedes hacerlo aquí:</p>
+            <a href="{{ url_for('boarding_pass', reservation_id=reservation.id, _external=True) }}" class="ticket-link">Ver mi Boleto</a>
+
+            <p>¡Te deseamos un excelente viaje!</p>
+        </div>
+        <div class="footer">
+            <p>&copy; {{ now.year }} Umes Air. Todos los derechos reservados.</p>
+            <p>{{ team_name }}</p>
+        </div>
+    </div>
+</body>
+</html>

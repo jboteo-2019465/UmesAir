@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">¡Reservación Confirmada!</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-success" role="alert">
+                        <i class="fas fa-check-circle"></i> Su pago ha sido procesado exitosamente.
+                    </div>
+
+                    <div class="ticket-container p-4 border rounded mb-4">
+                        <h5 class="text-center mb-4">Ticket de Vuelo</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Código de Vuelo:</strong> {{ reservation.flight_code }}</p>
+                                <p><strong>Fecha:</strong> {{ reservation.date }}</p>
+                                <p><strong>Origen:</strong> {{ reservation.origin }}</p>
+                                <p><strong>Destino:</strong> {{ reservation.destination }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Asiento:</strong> {{ reservation.seat_number }}</p>
+                                <p><strong>Estado:</strong> <span class="badge bg-success">Confirmado</span></p>
+                                <p><strong>Reservación ID:</strong> {{ reservation.id }}</p>
+                                <p><strong>Monto Pagado:</strong> Q{{ '%.2f'|format(payment.amount) }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button class="btn btn-primary me-2" onclick="window.print()">
+                            <i class="fas fa-print"></i> Imprimir Ticket
+                        </button>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                            <i class="fas fa-home"></i> Volver al Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        .ticket-container, .ticket-container * {
+            visibility: visible;
+        }
+        .ticket-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+        .btn {
+            display: none;
+        }
+    }
+</style>
+{% endblock %}

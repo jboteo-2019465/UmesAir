@@ -1,0 +1,414 @@
+{% extends 'base.html' %}
+
+{% block title %}UMES Air - Aerolínea Regional de Guatemala a Flores{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 fade-in">
+                <h1 class="display-4">Bienvenido a UMES Air</h1>
+                <p class="lead mb-4">Su aerolínea regional preferida conectando Ciudad de Guatemala y Flores, Petén con vuelos diarios.</p>
+                <div class="mt-5">
+                    <a href="{{ url_for('list_flights') }}" class="btn btn-light btn-lg me-2 mb-2">Ver Vuelos</a>
+                    {% if 'user_id' not in session %}
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg mb-2">Iniciar sesión</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<div class="container">
+    <!-- Featured Destinations -->
+    <section class="my-5">
+        <h2 class="text-center mb-4">Nuestros Destinos</h2>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <img src="https://images.pexels.com/photos/2852355/pexels-photo-2852355.jpeg" class="card-img-top" alt="Guatemala City" style="height: 250px; object-fit: cover;">
+                    <div class="card-body">
+                        <h4 class="card-title">Ciudad de Guatemala (GUA)</h4>
+                        <p class="card-text">Experimente la vibrante capital de Guatemala, con su rica cultura, monumentos históricos y atracciones modernas.</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-plane-departure me-2 text-primary"></i> Salidas diarias a las 07:00 y 14:00</li>
+                            <li><i class="fas fa-plane-arrival me-2 text-primary"></i> Llegadas diarias a las 10:00 y 18:00</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <img src="https://images.pexels.com/photos/10353368/pexels-photo-10353368.jpeg" class="card-img-top" alt="Flores, Petén" style="height: 250px; object-fit: cover;">
+                    <div class="card-body">
+                        <h4 class="card-title">Flores, Petén (FRS)</h4>
+                        <p class="card-text">Puerta de entrada a las antiguas ruinas mayas de Tikal y las maravillas naturales de la región de Petén, incluyendo el Lago Petén Itzá.</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-plane-departure me-2 text-primary"></i> Salidas diarias a las 09:00 y 17:00</li>
+                            <li><i class="fas fa-plane-arrival me-2 text-primary"></i> Llegadas diarias a las 08:00 y 15:00</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flight Schedule -->
+    <section class="my-5">
+        <h2 class="text-center mb-4">Horario de Vuelos Diarios</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Vuelo</th>
+                        <th>Origen</th>
+                        <th>Destino</th>
+                        <th>Salida</th>
+                        <th>Llegada</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>VU 101</strong></td>
+                        <td>Guatemala City (GUA)</td>
+                        <td>Flores, Petén (FRS)</td>
+                        <td>07:00</td>
+                        <td>08:00</td>
+                    </tr>
+                    <tr>
+                        <td><strong>VU 102</strong></td>
+                        <td>Flores, Petén (FRS)</td>
+                        <td>Guatemala City (GUA)</td>
+                        <td>09:00</td>
+                        <td>10:00</td>
+                    </tr>
+                    <tr>
+                        <td><strong>VU 103</strong></td>
+                        <td>Guatemala City (GUA)</td>
+                        <td>Flores, Petén (FRS)</td>
+                        <td>14:00</td>
+                        <td>15:00</td>
+                    </tr>
+                    <tr>
+                        <td><strong>VU 104</strong></td>
+                        <td>Flores, Petén (FRS)</td>
+                        <td>Guatemala City (GUA)</td>
+                        <td>17:00</td>
+                        <td>18:00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- About Our Aircraft -->
+    <section class="my-5">
+        <h2 class="text-center mb-4">Sobre Nuestra Aeronave</h2>
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <img src="https://images.pexels.com/photos/358220/pexels-photo-358220.jpeg" class="img-fluid rounded" alt="Embraer 110 Aircraft">
+            </div>
+            <div class="col-md-6">
+                <h3>Embraer 110 Bandeirante</h3>
+                <p>Nuestra flota consiste en el confiable Embraer 110 Bandeirante, un avión ligero de transporte bimotor turbohélice ideal para vuelos regionales.</p>
+                <ul>
+                    <li>Capacidad: 18 pasajeros</li>
+                    <li>Velocidad de crucero: 370 km/h</li>
+                    <li>Alcance: 1,964 km</li>
+                    <li>Cabina confortable con aire acondicionado</li>
+                    <li>Excelente visibilidad con ventanas grandes</li>
+                    <li>Rendimiento confiable para vuelos regionales cortos</li>
+                </ul>
+                <p>El Embraer 110 es perfectamente adecuado para la ruta Ciudad de Guatemala a Flores, ofreciendo un viaje cómodo y eficiente entre estos dos importantes destinos.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="my-5">
+        <h2 class="text-center mb-4">Por Qué Volar Con Nosotros</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-clock text-primary mb-3" style="font-size: 2.5rem;"></i>
+                        <h4 class="card-title">Horario Regular</h4>
+                        <p class="card-text">Con múltiples vuelos diarios, ofrecemos opciones de horarios convenientes tanto para viajeros de negocios como de placer.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-user-tie text-primary mb-3" style="font-size: 2.5rem;"></i>
+                        <h4 class="card-title">Servicio Profesional</h4>
+                        <p class="card-text">Nuestro experimentado equipo garantiza que su viaje sea seguro, cómodo y agradable desde el check-in hasta la llegada.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-ticket-alt text-primary mb-3" style="font-size: 2.5rem;"></i>
+                        <h4 class="card-title">Reserva Fácil</h4>
+                        <p class="card-text">Nuestro sistema de reservas simplificado facilita la reserva, gestión y check-in de sus vuelos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reservation Request Section -->
+    {% if 'user_id' not in session or session.get('user_role') == 'passenger' %}
+    <section class="my-5">
+        <h2 class="text-center mb-4">Solicitar Reserva por Correo</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text mb-4">Complete el siguiente formulario para solicitar una reserva. Nuestro equipo se pondrá en contacto con usted para confirmar los detalles y procesar el pago.</p>
+                        <form action="{{ url_for('request_reservation_email') }}" method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() if csrf_token else '' }}"> {# Asumiendo que tienes una función csrf_token() #}
+                            
+                            <h5 class="mb-3">Información del Vuelo</h5>
+                            <div class="mb-3">
+                                <label for="flight_id" class="form-label">Vuelo Deseado</label>
+                                <select class="form-select" id="flight_id" name="flight_id" required>
+                                    <option value="" selected disabled>Seleccione un vuelo...</option>
+                                    {% for flight in available_flights %}
+                                        <option value="{{ flight.id }}">{{ flight.flight_code }} ({{ flight.origin }} a {{ flight.destination }} - {{ flight.date }} {{ flight.departure_time }})</option>
+                                    {% else %}
+                                        <option value="" disabled>No hay vuelos disponibles en este momento.</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="seat_preference" class="form-label">Preferencia de Asiento (ej. Ventana, Pasillo, A1)</label>
+                                <input type="text" class="form-control" id="seat_preference" name="seat_preference" placeholder="Ej: Ventana, Pasillo, A1">
+                            </div>
+
+                            {% if 'user_id' not in session %}
+                            <h5 class="mt-4 mb-3">Sus Datos Personales</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="first_name" class="form-label">Nombre(s)</label>
+                                    <input type="text" class="form-control" id="first_name" name="first_name" required pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="last_name" class="form-label">Apellido(s)</label>
+                                    <input type="text" class="form-control" id="last_name" name="last_name" required pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="email" name="email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Ingrese un correo válido">
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Teléfono</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" required pattern="[0-9\s\-\+]{7,15}" maxlength="15" title="Ingrese un número de teléfono válido">
+                            </div>
+                             <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="nationality" class="form-label">Nacionalidad</label>
+                                    <input type="text" class="form-control" id="nationality" name="nationality" required pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="date_of_birth" class="form-label">Fecha de Nacimiento</label>
+                                    <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="gender" class="form-label">Género</label>
+                                    <select class="form-select" id="gender" name="gender" required>
+                                        <option value="" selected disabled>Seleccione...</option>
+                                        <option value="M">Masculino</option>
+                                        <option value="F">Femenino</option>
+                                        <option value="Other">Otro</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="id_number" class="form-label">No. de Identificación (Pasaporte/DPI)</label>
+                                    <input type="text" class="form-control" id="id_number" name="id_number" required pattern="[a-zA-Z0-9\-]{5,20}" maxlength="20" title="Mínimo 5 caracteres alfanuméricos y guiones">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="emergency_contact" class="form-label">Contacto de Emergencia (Nombre y Teléfono)</label>
+                                <input type="text" class="form-control" id="emergency_contact" name="emergency_contact" required pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s\-\+(),.:]{5,}" title="Ingrese nombre y teléfono del contacto">
+                            </div>
+                            
+                            <h5 class="mt-4 mb-3">Información de Pago (para agilizar el proceso)</h5>
+                            <div class="mb-3">
+                                <label for="card_holder_name" class="form-label">Nombre del Titular de la Tarjeta</label>
+                                <input type="text" class="form-control" id="card_holder_name" name="card_holder_name" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios">
+                            </div>
+                            <div class="mb-3">
+                                <label for="card_number" class="form-label">Número de Tarjeta</label>
+                                <input type="text" class="form-control" id="card_number" name="card_number" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" title="Ingrese de 13 a 16 dígitos">
+                                 <small class="text-muted">Ingrese de 13 a 16 dígitos. Los espacios se agregarán automáticamente.</small>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="card_expiry" class="form-label">Fecha de Expiración (MM/AA)</label>
+                                    <input type="text" class="form-control" id="card_expiry" name="card_expiry" placeholder="MM/AA" maxlength="5" title="MM/AA">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="card_cvc" class="form-label">CVC/CVV</label>
+                                    <input type="text" class="form-control" id="card_cvc" name="card_cvc" placeholder="XXX" maxlength="4" title="3 o 4 dígitos">
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <div class="mb-3">
+                                <label for="comments" class="form-label">Comentarios Adicionales</label>
+                                <textarea class="form-control" id="comments" name="comments" rows="3"></textarea>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">Enviar Solicitud de Reserva</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Validaciones para campos de texto generales (solo letras y espacios)
+    const textOnlyFields = ['first_name', 'last_name', 'nationality', 'card_holder_name'];
+    textOnlyFields.forEach(id => {
+        const field = document.getElementById(id);
+        if (field) {
+            field.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+            });
+        }
+    });
+
+    // Validación para teléfono (números, +, -, espacio)
+    const phoneField = document.getElementById('phone');
+    if (phoneField) {
+        phoneField.addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9\s\-\+]/g, '');
+        });
+    }
+
+    // Validación para número de identificación (alfanumérico y guiones)
+    const idNumberField = document.getElementById('id_number');
+    if (idNumberField) {
+        idNumberField.addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^a-zA-Z0-9\-]/g, '');
+        });
+    }
+
+    // Formato y validación para número de tarjeta
+    const cardNumberField = document.getElementById('card_number');
+    if (cardNumberField) {
+        cardNumberField.addEventListener('input', function(e) {
+            let value = this.value.replace(/\D/g, ''); // Solo números
+            value = value.substring(0, 16); // Limitar a 16 dígitos (Visa, MC, Amex max)
+            let formattedValue = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedValue += ' ';
+                }
+                formattedValue += value[i];
+            }
+            this.value = formattedValue;
+        });
+    }
+
+    // Formato y validación para fecha de expiración de tarjeta
+    const cardExpiryField = document.getElementById('card_expiry');
+    if (cardExpiryField) {
+        cardExpiryField.addEventListener('input', function(e) {
+            let value = this.value.replace(/\D/g, '');
+            if (value.length > 2) {
+                value = value.slice(0,2) + '/' + value.slice(2,4);
+            } else if (value.length === 2 && e.inputType !== 'deleteContentBackward') {
+                 // No añadir '/' automáticamente si solo hay 2 dígitos y no se está borrando
+                 // para permitir al usuario escribir el segundo dígito del mes antes del '/'
+            }
+            this.value = value.substring(0,5);
+        });
+    }
+
+    // Validación para CVC/CVV (solo números)
+    const cardCvcField = document.getElementById('card_cvc');
+    if (cardCvcField) {
+        cardCvcField.addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '').substring(0,4);
+        });
+    }
+
+    // Validación de formulario antes de enviar (opcional, complementa HTML5 y backend)
+    const reservationForm = document.querySelector('form[action="{{ url_for('request_reservation_email') }}"]');
+    if(reservationForm) {
+        reservationForm.addEventListener('submit', function(event) {
+            let isValid = true;
+            let firstErrorField = null;
+
+            // Ejemplo de validación simple para email (más robusta con regex en HTML pattern)
+            const emailField = document.getElementById('email');
+            if (emailField && emailField.value && !emailField.checkValidity()) {
+                console.warn('Validación de email fallida (cliente)');
+                isValid = false;
+                if(!firstErrorField) firstErrorField = emailField;
+            }
+            
+            // Validar número de tarjeta (longitud después de quitar espacios)
+            if (cardNumberField && cardNumberField.value) {
+                const cleanedCardNumber = cardNumberField.value.replace(/\s/g, '');
+                if (cleanedCardNumber.length > 0 && (cleanedCardNumber.length < 13 || cleanedCardNumber.length > 16)) {
+                    alert('El número de tarjeta debe tener entre 13 y 16 dígitos.');
+                    isValid = false;
+                    if(!firstErrorField) firstErrorField = cardNumberField;
+                }
+            }
+
+            // Validar fecha de expiración (formato MM/AA y no pasada)
+            if (cardExpiryField && cardExpiryField.value) {
+                const expiryPattern = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
+                if (!expiryPattern.test(cardExpiryField.value)) {
+                    alert('El formato de la fecha de expiración debe ser MM/AA.');
+                    isValid = false;
+                    if(!firstErrorField) firstErrorField = cardExpiryField;
+                } else {
+                    const [month, yearSuffix] = cardExpiryField.value.split('/');
+                    const currentYear = new Date().getFullYear() % 100;
+                    const currentMonth = new Date().getMonth() + 1;
+                    if (parseInt(yearSuffix) < currentYear || (parseInt(yearSuffix) === currentYear && parseInt(month) < currentMonth)) {
+                        alert('La tarjeta de crédito ha expirado.');
+                        isValid = false;
+                        if(!firstErrorField) firstErrorField = cardExpiryField;
+                    }
+                }
+            }
+
+            // Validar CVC (longitud)
+            if (cardCvcField && cardCvcField.value) {
+                if (cardCvcField.value.length > 0 && (cardCvcField.value.length < 3 || cardCvcField.value.length > 4)) {
+                    alert('El CVC/CVV debe tener 3 o 4 dígitos.');
+                    isValid = false;
+                    if(!firstErrorField) firstErrorField = cardCvcField;
+                }
+            }
+
+            if (!isValid) {
+                event.preventDefault(); // Detener envío del formulario
+                if(firstErrorField) {
+                    firstErrorField.focus();
+                }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

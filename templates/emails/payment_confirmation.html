@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Pago - Umes Air</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        h1 {
+            color: #0056b3; /* Azul Umes Air */
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Confirmación de Pago</h1>
+        <p>Estimado/a {{ reservation.first_name }} {{ reservation.last_name }},</p>
+        <p>Gracias por su pago. Su reserva con Umes Air ha sido confirmada.</p>
+
+        <h2>Detalles de la Reserva</h2>
+        <table>
+            <tr>
+                <th>ID de Reserva</th>
+                <td>{{ reservation.id }}</td>
+            </tr>
+            <tr>
+                <th>Vuelo</th>
+                <td>{{ reservation.flight_code }}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{{ reservation.date | strftime('%d/%m/%Y') }}</td>
+            </tr>
+            <tr>
+                <th>Origen</th>
+                <td>{{ reservation.origin }}</td>
+            </tr>
+            <tr>
+                <th>Destino</th>
+                <td>{{ reservation.destination }}</td>
+            </tr>
+            <tr>
+                <th>Asiento</th>
+                <td>{{ reservation.seat_number }}</td>
+            </tr>
+            <tr>
+                <th>Tarifa Total</th>
+                <td>USD {{ "%.2f" | format(reservation.total_fare) }}</td>
+            </tr>
+        </table>
+
+        <h2>Detalles de la Transacción</h2>
+        <table>
+            <tr>
+                <th>ID de Transacción</th>
+                <td>{{ transaction.transaction_id }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ transaction.status }}</td>
+            </tr>
+            {% if transaction.card_type %}
+            <tr>
+                <th>Tipo de Tarjeta</th>
+                <td>{{ transaction.card_type }}</td>
+            </tr>
+            {% endif %}
+            {% if transaction.bank_name %}
+            <tr>
+                <th>Banco</th>
+                <td>{{ transaction.bank_name }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>Fecha de Transacción</th>
+                <td>{{ transaction.transaction_date | strftime('%d/%m/%Y %H:%M:%S') if transaction.transaction_date else 'N/A' }}</td>
+            </tr>
+        </table>
+
+        <p>Si tiene alguna pregunta, no dude en contactarnos.</p>
+        <p>¡Gracias por volar con Umes Air!</p>
+
+        <div class="footer">
+            <p>&copy; {{ "now" | strftime('%Y') }} Umes Air. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>

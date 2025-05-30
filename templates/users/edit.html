@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Usuario - UMES Air{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Panel</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('list_users') }}">Usuarios</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Editar Usuario</li>
+        </ol>
+    </nav>
+    
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">Editar Usuario</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="name" class="form-label">Nombre Completo</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ user.name }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">Correo Electrónico</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="password" class="form-label">Nueva Contraseña (dejar en blanco para mantener la actual)</label>
+                        <input type="password" class="form-control" id="password" name="password">
+                        <div class="form-text">Solo complete esto si desea cambiar la contraseña.</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="role" class="form-label">Rol</label>
+                        <select class="form-select" id="role" name="role" required>
+                            <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Administrador</option>
+                            <option value="agent" {% if user.role == 'agent' %}selected{% endif %}>Agente de Boletos</option>
+                            <option value="passenger" {% if user.role == 'passenger' %}selected{% endif %}>Pasajero</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="mt-4 d-flex justify-content-between">
+                    <a href="{{ url_for('list_users') }}" class="btn btn-outline-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Actualizar Usuario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

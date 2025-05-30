@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Reportes - UMES Air{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">Reportes</h1>
+    
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-users text-primary mb-3" style="font-size: 3rem;"></i>
+                    <h4 class="card-title">Lista de Pasajeros</h4>
+                    <p class="card-text">Generar una lista de pasajeros para un vuelo específico.</p>
+                    <a href="{{ url_for('passengers_by_flight') }}" class="btn btn-primary">Generar Reporte</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-pie text-primary mb-3" style="font-size: 3rem;"></i>
+                    <h4 class="card-title">Ocupación de Vuelos</h4>
+                    <p class="card-text">Ver tasas de ocupación para vuelos dentro de un rango de fechas.</p>
+                    <a href="{{ url_for('occupancy_report') }}" class="btn btn-primary">Generar Reporte</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-history text-primary mb-3" style="font-size: 3rem;"></i>
+                    <h4 class="card-title">Registro de Auditoría</h4>
+                    <p class="card-text">Ver actividad del sistema y acciones de usuarios.</p>
+                    <a href="{{ url_for('audit_log') }}" class="btn btn-primary">Ver Registro</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="mb-0">Instrucciones de Reportes</h5>
+        </div>
+        <div class="card-body">
+            <p>El sistema de reportes le permite generar varios informes operativos para monitorear el rendimiento de la aerolínea y los datos de pasajeros. Aquí le mostramos cómo usar cada reporte:</p>
+            
+            <div class="mb-4">
+                <h5><i class="fas fa-users me-2 text-primary"></i> Informe de Lista de Pasajeros</h5>
+                <p>Este informe muestra todos los pasajeros reservados en un vuelo específico. Use este informe para:</p>
+                <ul>
+                    <li>Registrar pasajeros en la puerta de embarque</li>
+                    <li>Contactar a los pasajeros en caso de cambios en el vuelo</li>
+                    <li>Seguir la ocupación del vuelo</li>
+                </ul>
+            </div>
+            
+            <div class="mb-4">
+                <h5><i class="fas fa-chart-pie me-2 text-primary"></i> Informe de Ocupación de Vuelos</h5>
+                <p>Este informe proporciona estadísticas de ocupación de múltiples vuelos. Use este informe para:</p>
+                <ul>
+                    <li>Identificar vuelos de alta y baja demanda</li>
+                    <li>Seguir tendencias de reservas a lo largo del tiempo</li>
+                    <li>Tomar decisiones de planificación de capacidad</li>
+                </ul>
+            </div>
+            
+            <div>
+                <h5><i class="fas fa-history me-2 text-primary"></i> Registro de Auditoría</h5>
+                <p>El registro de auditoría rastrea todas las acciones del sistema. Use este informe para:</p>
+                <ul>
+                    <li>Monitorear la actividad de los usuarios</li>
+                    <li>Solucionar problemas</li>
+                    <li>Seguir cambios en reservas y vuelos</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

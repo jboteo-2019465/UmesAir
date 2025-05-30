@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Selección de Cliente - Nueva Reserva - UMES Air{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Panel</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('list_flights') }}">Vuelos</a></li>
+            <li class="breadcrumb-item active">Nueva Reserva - Selección de Cliente</li>
+        </ol>
+    </nav>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Nueva Reserva para el Vuelo {{ flight.flight_code }}</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5>Detalles del Vuelo</h5>
+                    <p><strong>Fecha:</strong> {{ flight.date }}</p>
+                    <p><strong>Ruta:</strong> {{ flight.origin }} → {{ flight.destination }}</p>
+                    <p><strong>Horario:</strong> {{ flight.departure_time }} - {{ flight.arrival_time }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Información de Precios</h5>
+                    <p><strong>Tarifa Base:</strong> Q {{ flight.base_fare }}</p>
+                    <p><strong>Impuestos y Cargos:</strong> Incluidos</p>
+                    <p><strong>Precio Total:</strong> Q {{ flight.total_fare }}</p>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ url_for('new_reservation', flight_id=flight.id) }}">
+                <div class="mb-4">
+                    <h5>Seleccionar Cliente</h5>
+                    <div class="form-group">
+                        <label for="customer_id" class="form-label">Cliente</label>
+                        <select class="form-select" id="customer_id" name="customer_id" required>
+                            <option value="">Seleccione un cliente</option>
+                            {% for customer in customers %}
+                            <option value="{{ customer.id }}">{{ customer.first_name }} {{ customer.last_name }} ({{ customer.email }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            Si el cliente no está en la lista, 
+                            <a href="{{ url_for('new_customer') }}" target="_blank">agregue un nuevo cliente</a> primero.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('list_flights') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        Continuar a Selección de Asientos <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+document.getElementById('reservationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const customerId = document.getElementById('customer_id').value;
+    if (!customerId) {
+        alert('Por favor seleccione un cliente');
+        return;
+    }
+    const action = this.action.replace('customer_id=0', 'customer_id=' + customerId);
+    window.location.href = action;
+});
+</script>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Clientes - UMES Air{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Gestión de Clientes</h1>
+        <a href="{{ url_for('new_customer') }}" class="btn btn-primary">
+            <i class="fas fa-user-plus me-2"></i> Agregar Nuevo Cliente
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Todos los Clientes</h5>
+                <div class="input-group" style="width: 300px;">
+                    <input type="text" class="form-control" placeholder="Buscar clientes..." 
+                           onkeyup="filterTable(this, 'customers-table')">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover" id="customers-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Nacionalidad</th>
+                            <th>Número de ID</th>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for customer in customers %}
+                            <tr>
+                                <td>{{ customer.first_name }} {{ customer.last_name }}</td>
+                                <td>{{ customer.nationality }}</td>
+                                <td>{{ customer.id_number }}</td>
+                                <td>{{ customer.email }}</td>
+                                <td>{{ customer.phone }}</td>
+                                <td>
+                                    <a href="{{ url_for('edit_customer', customer_id=customer.id) }}" class="btn btn-sm btn-outline-primary me-1" title="Editar Cliente">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </a>
+                                    {% if session.get('user_role') in ['admin', 'ticketing_agent'] %}
+                                        <a href="{{ url_for('convert_customer_to_user_form', customer_id=customer.id) }}" class="btn btn-sm btn-outline-info me-1" title="Convertir a Usuario">
+                                            <i class="fas fa-user-cog"></i> Convertir
+                                        </a>
+                                    {% endif %}
+                                    {% if session.get('user_role') == 'admin' %}
+                                        <a href="{{ url_for('delete_customer_with_user_prompt', customer_id=customer.id) }}" class="btn btn-sm btn-outline-danger" title="Eliminar Cliente">
+                                            <i class="fas fa-trash"></i> Eliminar
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

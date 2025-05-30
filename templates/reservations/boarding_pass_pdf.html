@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pase de Abordar - UMES Air</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #fff; 
+        }
+        .boarding-pass-container {
+            width: 800px;
+            margin: 20px auto; 
+            border: 2px solid #0056b3; 
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+            position: relative;
+            overflow: hidden; 
+            background-color: white;
+        }
+        .watermark-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 7vw; 
+            color: rgba(0, 86, 179, 0.08); 
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 1;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .boarding-pass-header {
+            background-color: #0056b3; 
+            color: white;
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            position: relative;
+            z-index: 2;
+        }
+        .boarding-pass-logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .boarding-pass-flight-info-header {
+            text-align: right;
+        }
+        .boarding-pass-flight-info-header .flight-label {
+            font-size: 14px;
+            display: block;
+            opacity: 0.9;
+        }
+        .boarding-pass-flight-info-header .flight-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .boarding-pass-body {
+            padding: 25px;
+            display: grid;
+            grid-template-columns: 2.5fr 1fr; 
+            gap: 25px;
+            position: relative; 
+            z-index: 2;
+        }
+        .boarding-pass-main-details {
+            padding-right: 0; 
+        }
+        .passenger-info, .flight-details-section, .seat-gate-info {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 13px;
+            color: #0056b3; /* System blue */
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 5px;
+            font-weight: 600;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+        }
+        .info-item {
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
+        }
+        .info-label {
+            font-size: 11px;
+            color: #495057;
+            display: block;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        .info-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #212529;
+        }
+        .boarding-pass-sidebar {
+            text-align: center;
+            padding-left: 25px;
+            border-left: 2px dashed #0056b3; 
+        }
+        .qr-code-container {
+            margin-bottom: 20px;
+        }
+        .qr-code-container img {
+            max-width: 100%;
+            height: auto;
+            border: 3px solid #0056b3; 
+            padding: 6px;
+            border-radius: 8px;
+            background-color: white;
+        }
+        .qr-instructions {
+            font-size: 13px;
+            color: #495057;
+            margin-bottom: 15px;
+        }
+        .sidebar-info-item .info-label {
+            font-size: 12px;
+        }
+        .sidebar-info-item .info-value {
+            font-size: 24px;
+            color: #004085; 
+        }
+        .gate-info-sidebar .info-value {
+            font-size: 36px;
+            color: #c82333; 
+            font-weight: bold;
+        }
+        .boarding-time-sidebar .info-value {
+            font-size: 22px;
+        }
+        .important-notice {
+            font-size: 12px;
+            color: #5a5a5a;
+            margin-top: 25px;
+            text-align: center;
+            padding: 12px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            line-height: 1.5;
+        }
+        .boarding-pass-footer {
+            text-align: center;
+            padding: 15px 25px;
+            font-size: 12px;
+            color: #6c757d;
+            border-top: 1px solid #dee2e6;
+            background-color: #f8f9fa;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            position: relative;
+            z-index: 2;
+        }
+        .boarding-pass-route {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; 
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: #e9f5ff; 
+            border-radius: 8px;
+            border: 1px solid #b8d;
+        }
+        .boarding-pass-airport {
+            text-align: center;
+            flex: 1;
+        }
+        .boarding-pass-code {
+            font-size: 32px;
+            font-weight: bold;
+            color: #0056b3;
+            line-height: 1;
+        }
+        .boarding-pass-city {
+            font-size: 14px;
+            color: #333;
+            margin-top: 4px;
+        }
+        .boarding-pass-arrow {
+            font-size: 28px;
+            color: #0056b3; 
+            margin: 0 15px;
+            flex-shrink: 0;
+        }
+        
+        @font-face {
+            font-family: 'Font Awesome 5 Free';
+            font-style: normal;
+            font-weight: 900;
+            font-display: auto;
+            src: url("{{ url_for('static', filename='webfonts/fa-solid-900.woff2') }}") format('woff2'),
+                 url("{{ url_for('static', filename='webfonts/fa-solid-900.ttf') }}") format('truetype');
+        }
+        .fas {
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+        }
+    </style>
+</head>
+<body>
+    <div class="boarding-pass-container">
+        <div class="watermark-text">UMES Air</div> <!-- Watermark -->
+        <div class="boarding-pass-header">
+            <div class="boarding-pass-logo">UMES Air</div>
+            <div class="boarding-pass-flight-info-header">
+                <span class="flight-label">Vuelo / Flight</span>
+                <span class="flight-value">{{ reservation.flight_code }}</span>
+                <span class="flight-label" style="margin-top: 5px;">Fecha / Date</span>
+                <span class="flight-value">{{ reservation.date }}</span>
+            </div>
+        </div>
+        
+        <div class="boarding-pass-body">
+            <div class="boarding-pass-main-details">
+                    <div class="passenger-info">
+                        <div class="section-title">Información del Pasajero / Passenger Information</div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Nombre / Name</span>
+                                <span class="info-value">{{ reservation.first_name }} {{ reservation.last_name }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Documento / Document</span>
+                                <span class="info-value">{{ reservation.id_number if reservation.id_number else 'N/A' }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="boarding-pass-route">
+                        <div class="boarding-pass-airport">
+                            <div class="boarding-pass-code">{{ reservation.origin_code if reservation.origin_code else reservation.origin[:3].upper() }}</div>
+                            <div class="boarding-pass-city">{{ reservation.origin_name if reservation.origin_name else reservation.origin }}</div>
+                        </div>
+                        <div class="boarding-pass-arrow">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <div class="boarding-pass-airport">
+                            <div class="boarding-pass-code">{{ reservation.destination_code if reservation.destination_code else reservation.destination[:3].upper() }}</div>
+                            <div class="boarding-pass-city">{{ reservation.destination_name if reservation.destination_name else reservation.destination }}</div>
+                        </div>
+                    </div>
+
+                    <div class="flight-details-section">
+                        <div class="section-title">Detalles del Vuelo / Flight Details</div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Salida / Departure</span>
+                                <span class="info-value">{{ reservation.departure_time }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Llegada / Arrival</span>
+                                <span class="info-value">{{ reservation.arrival_time }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Duración / Duration</span>
+                                <span class="info-value">{{ reservation.flight_duration if reservation.flight_duration else 'N/A' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="boarding-pass-sidebar">
+                    <div class="qr-code-container">
+                        {% if qr_code_image %}
+                            <img src="data:image/png;base64,{{ qr_code_image }}" alt="Código QR del Pase de Abordar">
+                        {% else %}
+                            <p>Error al generar QR.</p>
+                        {% endif %}
+                        <p class="qr-instructions">Escanee este código en la puerta de abordaje.</p>
+                    </div>
+                    
+                    <div class="seat-gate-info">
+                        <div class="info-item sidebar-info-item gate-info-sidebar">
+                            <span class="info-label">Puerta / Gate</span>
+                            <span class="info-value">{{ reservation.gate }}</span>
+                        </div>
+                        <div class="info-item sidebar-info-item" style="margin-top: 15px;">
+                            <span class="info-label">Asiento / Seat</span>
+                            <span class="info-value">{{ reservation.seat_number if reservation.seat_number else 'N/A' }}</span>
+                        </div>
+                        <div class="info-item sidebar-info-item boarding-time-sidebar" style="margin-top: 15px;">
+                            <span class="info-label">Embarque / Boarding</span>
+                            <span class="info-value">{{ reservation.boarding_time }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="important-notice">
+                Llegue a la puerta de embarque al menos 30 minutos antes de la hora de embarque. Tenga a mano su identificación y este pase de abordar. <br>
+                Arrive at the gate at least 30 minutes prior to boarding time. Have your ID and this boarding pass ready.
+            </div>
+
+        <div class="boarding-pass-footer">
+            Gracias por volar con UMES Air. ¡Le deseamos un excelente viaje! / Thank you for flying with UMES Air. We wish you an excellent trip!
+        </div>
+    </div>
+</body>
+</html>

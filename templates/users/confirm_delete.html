@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmar Eliminación de Usuario{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteCustomerCheckbox = document.getElementById('delete_customer');
+        const customerReservationsInfo = document.getElementById('customer_reservations_info');
+
+        if (deleteCustomerCheckbox && customerReservationsInfo) {
+            deleteCustomerCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    customerReservationsInfo.style.display = 'block';
+                } else {
+                    customerReservationsInfo.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Confirmar Eliminación de Usuario</h2>
+    <p>Estás a punto de eliminar al usuario <strong>{{ user.name }} ({{ user.email }})</strong>.</p>
+    {% if customer %}
+        <p>Este usuario tiene un cliente asociado:</p>
+        <ul>
+            <li><strong>Nombre:</strong> {{ customer.first_name }} {{ customer.last_name }}</li>
+            <li><strong>Email:</strong> {{ customer.email }}</li>
+            <li><strong>ID de Cliente:</strong> {{ customer.id }}</li>
+        </ul>
+        <form method="POST" action="{{ url_for('delete_user_with_customer_prompt', user_id=user.id) }}">
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" name="delete_customer" id="delete_customer" value="true">
+                <label class="form-check-label" for="delete_customer">
+                    Eliminar también el cliente asociado (esto también eliminará sus reservaciones).
+                </label>
+            </div>
+
+            {% if reservations_customer_details %}
+            <div id="customer_reservations_info" style="display: none;" class="alert alert-warning mt-3">
+                <p><strong>¡Atención!</strong> Al eliminar el cliente asociado, también se eliminarán las siguientes reservaciones activas:</p>
+                <ul>
+                    {% for reservation in reservations_customer_details %}
+                        <li>Reserva ID: {{ reservation.id }} - Vuelo: {{ reservation.flight_number }} ({{ reservation.origin }} a {{ reservation.destination }}) - Fecha: {{ reservation.flight_date }} - Estado: {{ reservation.status }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-danger">Eliminar Usuario</button>
+            <a href="{{ url_for('list_users') }}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    {% else %}
+        <p>Este usuario no tiene un cliente asociado directamente por email.</p>
+        <form method="POST" action="{{ url_for('delete_user_with_customer_prompt', user_id=user.id) }}">
+            <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+            <a href="{{ url_for('list_users') }}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    {% endif %}
+</div>
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteCustomerCheckbox = document.getElementById('delete_customer');
+        const customerReservationsInfo = document.getElementById('customer_reservations_info');
+
+        if (deleteCustomerCheckbox && customerReservationsInfo) {
+            deleteCustomerCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    customerReservationsInfo.style.display = 'block';
+                } else {
+                    customerReservationsInfo.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Cancelar Vuelo - UMES Air{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">Confirmar Cancelación de Vuelo</h4>
+                </div>
+                <div class="card-body">
+                    <p>Está a punto de cancelar el siguiente vuelo:</p>
+                    <ul>
+                        <li><strong>Código de Vuelo:</strong> {{ flight.flight_code }}</li>
+                        <li><strong>Fecha:</strong> {{ flight.date }}</li>
+                        <li><strong>Origen:</strong> {{ flight.origin }}</li>
+                        <li><strong>Destino:</strong> {{ flight.destination }}</li>
+                        <li><strong>Hora de Salida:</strong> {{ flight.departure_time }}</li>
+                    </ul>
+                    <p class="text-danger"><strong>Advertencia:</strong> Esta acción es irreversible. El vuelo se marcará como cancelado y se enviarán notificaciones a todos los pasajeros con reservaciones activas.</p>
+                    
+                    <form method="POST" action="{{ url_for('cancel_flight_page', flight_id=flight.id) }}">
+                        <div class="mb-3">
+                            <label for="cancellation_reason" class="form-label">Motivo de la cancelación (requerido):</label>
+                            <textarea class="form-control" id="cancellation_reason" name="cancellation_reason" rows="3" required></textarea>
+                            <div class="form-text">Este motivo se incluirá en la notificación a los pasajeros.</div>
+                        </div>
+                        
+                        <div class="text-end">
+                            <a href="{{ url_for('list_flights', date=flight.date) }}" class="btn btn-secondary me-2">Volver al Listado</a>
+                            <button type="submit" class="btn btn-danger">Confirmar Cancelación</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

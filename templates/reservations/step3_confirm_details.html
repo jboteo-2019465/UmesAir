@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmación de Datos - Nueva Reserva - UMES Air{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Panel</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('list_flights') }}">Vuelos</a></li>
+            <li class="breadcrumb-item">Nueva Reserva</li>
+            <li class="breadcrumb-item active">Confirmación de Datos</li>
+        </ol>
+    </nav>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Confirmación de Datos - Vuelo {{ flight.flight_code }}</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5>Detalles del Vuelo</h5>
+                    <p><strong>Fecha:</strong> {{ flight.date }}</p>
+                    <p><strong>Ruta:</strong> {{ flight.origin }} → {{ flight.destination }}</p>
+                    <p><strong>Horario:</strong> {{ flight.departure_time }} - {{ flight.arrival_time }}</p>
+                    <p><strong>Asiento Seleccionado:</strong> {{ selected_seat }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Información de Precios</h5>
+                    <p><strong>Tarifa Base:</strong> Q {{ flight.base_fare }}</p>
+                    <p><strong>Impuestos y Cargos:</strong> Incluidos</p>
+                    <p><strong>Precio Total:</strong> Q {{ flight.total_fare }}</p>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ url_for('reservation_step4_payment', flight_id=flight.id) }}">
+                <input type="hidden" name="customer_id" value="{{ customer.id }}">
+                <input type="hidden" name="selected_seat" value="{{ selected_seat }}">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Datos del Pasajero</h5>
+                        <div class="mb-3">
+                            <label for="first_name" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" 
+                                   value="{{ customer.first_name }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="last_name" class="form-label">Apellido</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" 
+                                   value="{{ customer.last_name }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" 
+                                   value="{{ customer.email }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" 
+                                   value="{{ customer.phone }}" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5>Observaciones</h5>
+                        <div class="mb-3">
+                            <label for="special_requests" class="form-label">Solicitudes Especiales</label>
+                            <textarea class="form-control" id="special_requests" name="special_requests" 
+                                      rows="4" placeholder="Ingrese cualquier solicitud especial aquí (opcional)">
+                                {{ special_requests if special_requests else '' }}
+                            </textarea>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-info-circle"></i> Información Importante</h6>
+                            <ul class="mb-0">
+                                <li>Verifique que todos los datos sean correctos antes de continuar.</li>
+                                <li>Las solicitudes especiales están sujetas a disponibilidad.</li>
+                                <li>Recibirá una confirmación por email después del pago.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{{ url_for('reservation_step2_seat', flight_id=flight.id, customer_id=customer.id) }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver a Selección de Asiento
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        Continuar a Pago <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

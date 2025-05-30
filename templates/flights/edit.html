@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Vuelo - UMES Air{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Panel</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('list_flights') }}">Vuelos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Editar Vuelo</li>
+        </ol>
+    </nav>
+    
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">Editar Vuelo</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="flight_code" class="form-label">Código de Vuelo</label>
+                        <input type="text" class="form-control" id="flight_code" name="flight_code" value="{{ flight.flight_code }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="date" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="date" name="date" value="{{ flight.date }}" required>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="origin" class="form-label">Origen</label>
+                        <select class="form-select" id="origin" name="origin" required>
+                            <option value="">Seleccionar origen</option>
+                            <option value="GUA" {% if flight.origin == 'GUA' %}selected{% endif %}>Ciudad de Guatemala (GUA)</option>
+                            <option value="FRS" {% if flight.origin == 'FRS' %}selected{% endif %}>Flores, Petén (FRS)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="destination" class="form-label">Destino</label>
+                        <select class="form-select" id="destination" name="destination" required>
+                            <option value="">Seleccionar destino</option>
+                            <option value="GUA" {% if flight.destination == 'GUA' %}selected{% endif %}>Ciudad de Guatemala (GUA)</option>
+                            <option value="FRS" {% if flight.destination == 'FRS' %}selected{% endif %}>Flores, Petén (FRS)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="departure_time" class="form-label">Hora de Salida</label>
+                        <input type="time" class="form-control" id="departure_time" name="departure_time" value="{{ flight.departure_time }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="arrival_time" class="form-label">Hora de Llegada</label>
+                        <input type="time" class="form-control" id="arrival_time" name="arrival_time" value="{{ flight.arrival_time }}" required>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="capacity" class="form-label">Capacidad de la Aeronave</label>
+                        <input type="number" class="form-control" id="capacity" name="capacity" min="{{ reserved_seats }}" max="18" value="{{ flight.capacity }}" required>
+                        <div class="form-text">
+                            La capacidad máxima del Embraer 110 es de 18 asientos.
+                            <br>Actualmente hay {{ reserved_seats }} asiento(s) reservado(s) para este vuelo.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="base_fare" class="form-label">Tarifa Base (Q)</label>
+                        <input type="number" class="form-control" id="base_fare" name="base_fare" min="0" step="0.01" value="{{ flight.base_fare }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="total_fare" class="form-label">Tarifa Total</label>
+                        <input type="number" step="0.01" class="form-control" id="total_fare" name="total_fare" value="{{ flight.total_fare if flight.total_fare is not none else '' }}" required>
+                    </div>
+                </div>
+
+                {% if require_change_reason or (flight.change_reason and flight.change_reason != '') %}
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="change_reason" class="form-label">Motivo del Cambio (si aplica)</label>
+                        <textarea class="form-control" id="change_reason" name="change_reason" rows="3" {% if require_change_reason %}required{% endif %}>{{ flight.change_reason if flight.change_reason }}</textarea>
+                        {% if require_change_reason %}
+                            <div class="form-text text-danger">Se requiere un motivo si la fecha o la hora del vuelo cambian y hay reservaciones existentes.</div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <a href="{{ url_for('list_flights', date=flight.date if flight.date else '') }}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ensure origin and destination are different
+        const originSelect = document.getElementById('origin');
+        const destinationSelect = document.getElementById('destination');
+        
+        function updateDestinationOptions() {
+            const originValue = originSelect.value;
+            
+            for (let option of destinationSelect.options) {
+                if (option.value === '') continue;
+                option.disabled = option.value === originValue;
+            }
+            
+            if (destinationSelect.value === originValue) {
+                destinationSelect.value = '';
+            }
+        }
+        
+        originSelect.addEventListener('change', updateDestinationOptions);
+        updateDestinationOptions();
+    });
+</script>
+{% endblock %}

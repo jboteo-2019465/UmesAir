@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva Solicitud de Reserva de Vuelo</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; color: #333; }
+        .container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 600px; margin: auto; }
+        h1 { color: #0056b3; }
+        h2 { color: #004085; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        p { line-height: 1.6; }
+        strong { color: #0056b3; }
+        .section { margin-bottom: 20px; }
+        .footer { margin-top: 30px; text-align: center; font-size: 0.9em; color: #777; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { text-align: left; padding: 8px; border-bottom: 1px solid #ddd; }
+        th { background-color: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nueva Solicitud de Reserva de Vuelo</h1>
+
+        <p>Se ha recibido una nueva solicitud de reserva de vuelo a través del sitio web.</p>
+        <p><strong>Solicitante:</strong> {{ requester_name }} (<a href="mailto:{{ requester_email }}">{{ requester_email }}</a>)</p>
+        <p><strong>Tipo de Solicitud:</strong> {{ 'Usuario Registrado (Pasajero)' if is_logged_in_passenger else 'Usuario No Registrado/Invitado' }}</p>
+
+        <div class="section">
+            <h2>Detalles del Vuelo Solicitado</h2>
+            {% if flight_info %}
+                <table>
+                    <tr><th>Vuelo:</th><td>{{ flight_info.flight_code }}</td></tr>
+                    <tr><th>Fecha:</th><td>{{ flight_info.date | strftime('%d/%m/%Y') }}</td></tr>
+                    <tr><th>Origen:</th><td>{{ flight_info.origin }}</td></tr>
+                    <tr><th>Destino:</th><td>{{ flight_info.destination }}</td></tr>
+                    <tr><th>Hora de Salida:</th><td>{{ flight_info.departure_time }}</td></tr>
+                </table>
+            {% else %}
+                <p>No se especificó un vuelo.</p>
+            {% endif %}
+            <p><strong>Asiento Preferido:</strong> {{ form_data.get('seat_preference', 'No especificado') }}</p>
+        </div>
+
+        <div class="section">
+            <h2>Datos del Pasajero/Cliente</h2>
+            <table>
+                <tr><th>Nombre Completo:</th><td>{{ form_data.get('first_name', '') }} {{ form_data.get('last_name', '') }}</td></tr>
+                <tr><th>Email:</th><td>{{ form_data.get('email', 'No especificado') }}</td></tr>
+                <tr><th>Teléfono:</th><td>{{ form_data.get('phone', 'No especificado') }}</td></tr>
+                <tr><th>Nacionalidad:</th><td>{{ form_data.get('nationality', 'No especificado') }}</td></tr>
+                <tr><th>Fecha de Nacimiento:</th><td>{{ form_data.get('date_of_birth', 'No especificado') }}</td></tr>
+                <tr><th>Género:</th><td>{{ form_data.get('gender', 'No especificado') }}</td></tr>
+                <tr><th>Número de ID:</th><td>{{ form_data.get('id_number', 'No especificado') }}</td></tr>
+                <tr><th>Contacto de Emergencia:</th><td>{{ form_data.get('emergency_contact', 'No especificado') }}</td></tr>
+            </table>
+        </div>
+
+        {% if not is_logged_in_passenger or (form_data.get('card_number') and form_data.get('card_number') != '**** **** **** ****') %}
+        <div class="section">
+            <h2>Información de Pago (si fue proporcionada)</h2>
+            <table>
+                <tr><th>Número de Tarjeta:</th><td>{{ form_data.get('card_number', 'No especificado') }}</td></tr>
+                <tr><th>Nombre en la Tarjeta:</th><td>{{ form_data.get('card_name', 'No especificado') }}</td></tr>
+                <tr><th>Fecha de Expiración:</th><td>{{ form_data.get('card_expiry', 'No especificado') }}</td></tr>
+                <tr><th>CVV:</th><td>{{ form_data.get('card_cvv', 'No especificado') }}</td></tr>
+            </table>
+        </div>
+        {% endif %}
+
+        <div class="section">
+            <h2>Comentarios Adicionales</h2>
+            <p>{{ form_data.get('comments', 'Sin comentarios adicionales.') }}</p>
+        </div>
+
+        <div class="footer">
+            <p>Este es un mensaje automático generado por el sistema de UMES Air.</p>
+        </div>
+    </div>
+</body>
+</html>

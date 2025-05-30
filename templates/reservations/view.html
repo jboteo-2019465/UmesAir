@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalles de Reserva - UMES Air{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Panel</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Detalles de Reserva</li>
+        </ol>
+    </nav>
+    
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Reserva: {{ reservation.id }}</h4>
+                <div>
+                    {% if reservation.status == 'paid' %}
+                        <span class="badge bg-success">Pagado</span>
+                    {% elif reservation.status == 'pending' %}
+                        <span class="badge bg-warning text-dark">Pendiente</span>
+                    {% else %}
+                        <span class="badge bg-danger">Cancelado</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <h5 class="mb-3">Información del Vuelo</h5>
+                    <div class="ps-3">
+                        <p><strong>Código de Vuelo:</strong> {{ reservation.flight_code }}</p>
+                        <p><strong>Fecha:</strong> {{ reservation.date }}</p>
+                        <p>
+                            <strong>Ruta:</strong> {{ reservation.origin }} a {{ reservation.destination }}
+                        </p>
+                        <p><strong>Salida:</strong> {{ reservation.departure_time }}</p>
+                        <p><strong>Llegada:</strong> {{ reservation.arrival_time }}</p>
+                        <p><strong>Asiento:</strong> {{ reservation.seat_number }}</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <h5 class="mb-3">Información del Pasajero</h5>
+                    <div class="ps-3">
+                        <p><strong>Nombre:</strong> {{ reservation.first_name }} {{ reservation.last_name }}</p>
+                        <p><strong>Número de Identificación:</strong> {{ reservation.id_number }}</p>
+                        <p><strong>Correo Electrónico:</strong> {{ reservation.email }}</p>
+                        <p><strong>Teléfono:</strong> {{ reservation.phone }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5 class="mb-3">Información de Pago</h5>
+                    <div class="ps-3">
+                        <p><strong>Precio:</strong> Q {{ "%.2f"|format(reservation.price) }}</p>
+                        <p><strong>Estado:</strong> 
+                            {% if reservation.status == 'paid' %}
+                                <span class="text-success">Pagado</span>
+                            {% elif reservation.status == 'pending' %}
+                                <span class="text-warning">Pago Pendiente</span>
+                            {% else %}
+                                <span class="text-danger">Cancelado</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+                <div>
+                    <a href="{{ url_for('reservation_step2_seat', flight_id=reservation.flight_id, customer_id=reservation.customer_id) }}" class="btn btn-outline-primary me-2">
+                        <i class="fas fa-chair me-1"></i> Ver/Cambiar Asiento
+                    </a>
+                    
+                    {% if reservation.status == 'paid' %}
+                        <a href="{{ url_for('boarding_pass', reservation_id=reservation.id) }}" class="btn btn-primary me-2">
+                            <i class="fas fa-ticket-alt me-1"></i> Ver Pase de Abordar
+                        </a>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    {% if session.user_role in ['admin', 'agent'] and reservation.status == 'pending' %}
+                        <a href="{{ url_for('reservation_step4_payment', reservation_id=reservation.id) }}" class="btn btn-success me-2">
+                            <i class="fas fa-credit-card me-1"></i> Procesar Pago
+                        </a>
+                    {% endif %}
+                    
+                    {% if reservation.status != 'cancelled' %}
+                        <form method="post" action="{{ url_for('cancel_reservation', reservation_id=reservation.id) }}" class="d-inline-block">
+                            <button type="submit" class="btn btn-danger" 
+                                    data-confirm="¿Está seguro que desea cancelar esta reserva?">
+                                <i class="fas fa-times me-1"></i> Cancelar Reserva
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

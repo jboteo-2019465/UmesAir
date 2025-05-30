@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Cliente - UMES Air{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Panel</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('list_customers') }}">Clientes</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Editar Cliente</li>
+        </ol>
+    </nav>
+    
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">Editar Cliente</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="first_name" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ customer.first_name }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="last_name" class="form-label">Apellido</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ customer.last_name }}" required>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="nationality" class="form-label">Nacionalidad</label>
+                        <input type="text" class="form-control" id="nationality" name="nationality" value="{{ customer.nationality }}" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="dob" class="form-label">Fecha de Nacimiento</label>
+                        <input type="date" class="form-control" id="dob" name="dob" value="{{ customer.date_of_birth }}" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="gender" class="form-label">Género</label>
+                        <select class="form-select" id="gender" name="gender" required>
+                            <option value="M" {% if customer.gender == 'M' %}selected{% endif %}>Masculino</option>
+                            <option value="F" {% if customer.gender == 'F' %}selected{% endif %}>Femenino</option>
+                            <option value="Other" {% if customer.gender == 'Other' %}selected{% endif %}>Otro</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="id_number" class="form-label">Número de Pasaporte/DPI</label>
+                        <input type="text" class="form-control" id="id_number" name="id_number" value="{{ customer.id_number }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">Correo Electrónico</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ customer.email }}" required>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="phone" class="form-label">Número de Teléfono</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" value="{{ customer.phone }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="emergency_contact" class="form-label">Contacto de Emergencia</label>
+                        <input type="text" class="form-control" id="emergency_contact" name="emergency_contact" 
+                               value="{{ customer.emergency_contact }}" required>
+                    </div>
+                </div>
+                
+                <div class="mt-4 d-flex justify-content-between">
+                    <a href="{{ url_for('list_customers') }}" class="btn btn-outline-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Actualizar Cliente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel de Control - UMES Air{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">Panel de Control</h1>
+    
+    <div class="row mb-4">
+        {% if role == 'admin' %}
+            <div class="col-md-3 mb-4">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <div class="stats-title">Usuarios</div>
+                            <div class="stats-number">{{ users_count if users_count is defined else 'N/A' }}</div>
+                        </div>
+                        <div class="stats-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <div class="stats-title">Vuelos</div>
+                            <div class="stats-number">{{ flights_count if flights_count is defined else 'N/A' }}</div>
+                        </div>
+                        <div class="stats-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <div class="stats-title">Reservas</div>
+                            <div class="stats-number">{{ reservations_count if reservations_count is defined else 'N/A' }}</div>
+                        </div>
+                        <div class="stats-icon">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <div class="stats-title">Clientes</div>
+                            <div class="stats-number">{{ customers_count if customers_count is defined else 'N/A' }}</div>
+                        </div>
+                        <div class="stats-icon">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% elif role == 'agent' %}
+            <div class="col-md-4 mb-4">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <div class="stats-title">Vuelos Hoy</div>
+                            <div class="stats-number">4</div>
+                        </div>
+                        <div class="stats-icon">
+                            <i class="fas fa-plane-departure"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <div class="stats-title">Reservas Recientes</div>
+                            <div class="stats-number">{{ reservations|length }}</div>
+                        </div>
+                        <div class="stats-icon">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <div class="stats-title">Clientes Registrados</div>
+                            <div class="stats-number">4</div>
+                        </div>
+                        <div class="stats-icon">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-md-6 mb-4">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <div class="stats-title">Tus Reservas</div>
+                            <div class="stats-number">{{ reservations|length }}</div>
+                        </div>
+                        <div class="stats-icon">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <div class="stats-title">Próximos Vuelos</div>
+                            <div class="stats-number">{{ upcoming_flights|length }}</div>
+                        </div>
+                        <div class="stats-icon">
+                            <i class="fas fa-plane-departure"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="row">
+        <!-- Upcoming Flights Section -->
+        <div class="col-lg-6 mb-5">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Próximos Vuelos</h5>
+                    <a href="{{ url_for('list_flights') }}" class="btn btn-sm btn-outline-primary">Ver Todos</a>
+                </div>
+                <div class="card-body">
+                    {% if upcoming_flights %}
+                        {% for flight in upcoming_flights %}
+                            <div class="flight-card">
+                                <div class="row w-100">
+                                    <div class="col-md-3 mb-3 mb-md-0">
+                                        <div class="flight-code mb-1">{{ flight.flight_code }}</div>
+                                        <div class="flight-date">{{ flight.date }}</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <div class="flight-route">
+                                            <div class="text-center">
+                                                <div>{{ flight.origin }}</div>
+                                            </div>
+                                            <div class="flight-arrow"><i class="fas fa-arrow-right"></i></div>
+                                            <div class="text-center">
+                                                <div>{{ flight.destination }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="flight-time text-center">
+                                            {{ flight.departure_time }} - {{ flight.arrival_time }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 text-md-end">
+                                        <a href="{{ url_for('flight_seats', flight_id=flight.id) }}" class="btn btn-sm btn-primary mb-2 w-100">Ver Asientos</a>
+                                        {% if role in ['admin', 'agent'] %}
+                                            <a href="{{ url_for('new_reservation', flight_id=flight.id) }}" class="btn btn-sm btn-outline-primary w-100">Nueva Reserva</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted text-center py-3">No se encontraron próximos vuelos.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Reservations Section -->
+        <div class="col-lg-6 mb-5">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        {% if role == 'passenger' %}
+                            Tus Reservas
+                        {% else %}
+                            Reservas Recientes
+                        {% endif %}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if reservations %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Flight</th>
+                                        <th>Date</th>
+                                        {% if role != 'passenger' %}
+                                            <th>Passenger</th>
+                                        {% endif %}
+                                        <th>Seat</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for reservation in reservations %}
+                                        <tr>
+                                            <td>{{ reservation.flight_code }}</td>
+                                            <td>{{ reservation.date }}</td>
+                                            {% if role != 'passenger' %}
+                                                <td>{{ reservation.first_name }} {{ reservation.last_name }}</td>
+                                            {% endif %}
+                                            <td>{{ reservation.seat_number }}</td>
+                                            <td>
+                                                {% if reservation.status == 'paid' %}
+                                                    <span class="badge bg-success">Pagado</span>
+                                                {% elif reservation.status == 'pending' %}
+                                                    <span class="badge bg-warning text-dark">Pendiente</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">Cancelado</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <a href="{{ url_for('view_reservation', reservation_id=reservation.id) }}" class="btn btn-sm btn-primary">Ver</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted text-center py-3">No se encontraron reservas.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Acciones Rápidas</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% if role == 'admin' %}
+                            <div class="col-md-3 mb-3">
+                                <a href="{{ url_for('new_user') }}" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-user-plus me-2"></i> Agregar Nuevo Usuario
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="{{ url_for('new_flight') }}" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-plane-departure me-2"></i> Agregar Nuevo Vuelo
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="{{ url_for('new_customer') }}" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-user-plus me-2"></i> Agregar Nuevo Cliente
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="{{ url_for('reports') }}" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-chart-pie me-2"></i> Generar Informes
+                                </a>
+                            </div>
+                        {% elif role == 'agent' %}
+                            <div class="col-md-4 mb-3">
+                                <a href="{{ url_for('list_flights') }}" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-plane me-2"></i> Ver Vuelos
+                                </a>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <a href="{{ url_for('new_customer') }}" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-user-plus me-2"></i> Agregar Nuevo Cliente
+                                </a>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <a href="{{ url_for('list_customers') }}" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-users me-2"></i> Ver Clientes
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="col-md-6 mb-3">
+                                <a href="{{ url_for('list_flights') }}" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-plane me-2"></i> Ver Vuelos Disponibles
+                                </a>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {% if reservations and reservations|selectattr('status', 'equalto', 'paid')|list %}
+                                    {% set paid_reservation = reservations|selectattr('status', 'equalto', 'paid')|list|first %}
+                                    <a href="{{ url_for('boarding_pass', reservation_id=paid_reservation.id) }}" class="btn btn-outline-primary w-100">
+                                        <i class="fas fa-ticket-alt me-2"></i> Ver Tarjeta de Embarque
+                                    </a>
+                                {% else %}
+                                    <button class="btn btn-outline-secondary w-100" disabled>
+                                        <i class="fas fa-ticket-alt me-2"></i> No Hay Tarjetas de Embarque Disponibles
+                                    </button>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
